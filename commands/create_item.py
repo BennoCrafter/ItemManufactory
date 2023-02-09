@@ -1,2 +1,2 @@
-def create_item(inventory, all_ressources, recipes):
+def create_item(inventory, ressources, recipes):
     pass

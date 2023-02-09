@@ -1,4 +1,4 @@
-def craft_item(inventory, all_ressources, recipes):
+def craft_item(inventory, ressources, recipes):
     item_to_craft, count = input("What do you want to craft?: (metal*1)").split("*")
     all_craftable_things = []
     ressources_for_crafting = []
@@ -20,7 +20,7 @@ def craft_item(inventory, all_ressources, recipes):
             return new_inv[1], False
         else:
             inventory["items"] = new_inv[1]
-            inventory["items"][item_to_craft] = count
+            inventory["items"][item_to_craft] = int(count)
             return inventory, True
     else:
         return "The item doesn't exists!", False
@@ -62,7 +62,7 @@ def zip_ressource_list(ressource_list):
 example = False
 if example:
     recipes = {"metal": ["iron*1", "match*1"], "match": ["stick*1", "coal*.25"], "stick": ["wood*0.25"]}
-    inventory = {"tools": ["pickaxe", "wrench", "shovel"], "items": {"iron": 2, "match": 2}}
+    inventory = {"tools": ["pickaxe", "wrench", "shovel"], "items": {"iron": 2, "match": 2, "wood": 2, "coal": 0.25}}
     all_ressources = ["wood", "stone", "iron", "metal", "coal", "steel plate", "rubber", "conveyor belt"]
 
     craft_item = craft_item(inventory, all_ressources, recipes)
