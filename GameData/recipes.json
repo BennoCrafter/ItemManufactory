@@ -1,1 +1,1 @@
-{"metal": ["iron*1", "match*1"], "match": ["stick*1", "coal*0.25"], "stick": ["wood*1"]}
+{"steel": ["iron*1", "match*1"], "match": ["stick*1", "coal*0.25"], "stick": ["wood*1"], "engine":  ["steel*10", "copper wire*5", "fuel tank*1", "spark plug*1"], "spark plug":  ["cooper*5", "nickel*2", "insulator*1"], "insulator": ["rubber*5", "glass*2"], "glass":  ["sand*1", "match*1"], "cooper wire":  ["cooper*2"], "fuel tank":  ["rubber*2", "steel*5"]}

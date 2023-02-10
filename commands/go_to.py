@@ -1,0 +1,6 @@
+def go_to(position, possible_positions):
+    wanted_pos = input("Where do you want to go?(iron source):")
+    if wanted_pos in possible_positions:
+        return wanted_pos, True
+    else:
+        return "This position point does'nt exists!", False

@@ -1,3 +1,4 @@
+from commands.go_to import go_to
 from commands.mine import mine
 from commands.craft_item import craft_item
 from commands.create_item import create_item
@@ -9,7 +10,9 @@ class ItemManufactory:
     def __init__(self):
         self.instruction = "comming lol"
         self.printing_pretty = True
+        self.distance = 12
         self.inp = ""
+        self.possible_positions = ["spawn", "iron source", "nickel source", "cooper source", "rubber tree"]
         self.file_paths = {
             "upgrade_tiers_tools": "GameData/upgrade_tiers_tools.json",
             "upgrade_tiers_factorys": "GameData/upgrade_tiers_factorys.json",
@@ -23,29 +26,46 @@ class ItemManufactory:
                          "create item": create_item,
                          "mine": mine,
                          "get item dev": get_item_dev,
-                         "save": "placeholder",
-                         "exit": "placeholder"}
+                         }
+        self.special_commands = {"save": "placeholder",
+                                 "exit": "placeholder",
+                                 "get position": "placeholder",
+                                 "go to": go_to,
+                                 "get inventory": "placeholder"
+                                 }
 
     def get_command(self, inp):
         self.inp = inp
         if self.inp in self.commands.keys():
-            if self.inp == "save":
-                self.save()
-            elif self.inp == "exit":
-                self.save()
-                exit()
+            new_inventory = self.commands[self.inp](inventory=self.inventory, ressources=self.ressources,recipes=self.recipes)
+            if new_inventory[1]:
+                self.inventory = new_inventory[0]
             else:
-                new_inventory = self.commands[self.inp](inventory=self.inventory, ressources=self.ressources, recipes=self.recipes)
-                if new_inventory[1]:
-                    self.inventory = new_inventory[0]
-                else:
-                    print(new_inventory[0])
+                print(new_inventory[0])
         else:
-            print(f"Command: {self.inp} does'nt exists!")
+            if self.inp in self.special_commands.keys():
+                if self.inp == "save":
+                    self.save()
+                elif self.inp == "exit":
+                    self.save()
+                    exit()
+                elif self.inp == "get position":
+                    print(f"You're current position is: {self.player_data.get('position')}")
+                elif self.inp == "get inventory":
+                    self.print_inventory_pretty()
+                elif self.inp == "go to":
+                    new_position = go_to(position=self.player_data.get("position"),
+                                         possible_positions=self.possible_positions)
+                    if new_position[1]:
+                        self.player_data["position"] = new_position[0]
+                        print(f"You're current position is: {self.player_data.get('position')}")
+                    else:
+                        print(new_position[0])
+            else:
+                print(f"Command: {self.inp} doesn't exists!")
         self.game_loop()
 
     def game_loop(self):
-        self.print_inventory_pretty()
         self.get_command(inp=input("Input:"))
 
     def print_instruction(self):
@@ -60,6 +80,10 @@ class ItemManufactory:
     def save(self):
         with open(self.file_paths.get("inventory"), "w") as f:
             json.dump(self.inventory, f)
+        f.close()
+        with open(self.file_paths.get("player_experience"), "w") as f:
+            json.dump(self.player_data, f)
+        f.close()
 
     def load_game_data(self):
         # load upgrade_tiers
@@ -71,12 +95,14 @@ class ItemManufactory:
         self.inventory = self.load_json_file(file_path=self.file_paths.get("inventory"))
         # load recipes
         self.recipes = self.load_json_file(file_path=self.file_paths.get("recipes"))
+        # load player data
+        self.player_data = self.load_json_file(file_path=self.file_paths.get("player_experience"))
 
     def print_inventory_pretty(self):
         if self.printing_pretty:
             print(f"Tools:")
-            for item in self.inventory["tools"]:
-                print(f"\t- {item}")
+            for item, durability in self.inventory["tools"].items():
+                print(f"\t- {item} Durability: {durability}")
             print(f"Items:")
             for item, count in self.inventory["items"].items():
                 print(f"\t- {item}:{count}")
