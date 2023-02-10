@@ -1,4 +1,4 @@
 # TODO
 
 - add crafting cooldown
-- add mining cooldown
+- add repairng tools
