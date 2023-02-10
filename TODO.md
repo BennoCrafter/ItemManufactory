@@ -1,4 +1,4 @@
 # TODO
 
-- mining
 - add crafting cooldown
+- add mining cooldown

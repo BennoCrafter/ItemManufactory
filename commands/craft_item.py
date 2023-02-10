@@ -1,4 +1,4 @@
-def craft_item(inventory, ressources, recipes):
+def craft_item(inventory, recipes):
     item_to_craft, count = input("What do you want to craft?: (steel*1)").split("*")
     all_craftable_things = []
     ressources_for_crafting = []
