@@ -4,18 +4,17 @@ import time
 def craft_item(inventory, recipes, needed_time_per_item):
     item_to_craft, count = input("What do you want to craft?: (steel*1)").split("*")
     all_craftable_things = {}
-    ressources_for_crafting = []
+    ressources_for_crafting = {}
     # get all craftable items in a dictonary -> key = repair tool -- value = tool
     for item in recipes.keys():
         all_craftable_things[item.split("|")[0]] = item.split("|")[1]
     # get recipe for user's item
     recipe = recipes.get(item_to_craft + "|" + all_craftable_things.get(item_to_craft))
+    # save all ressources for crafting in a list
     if item_to_craft in all_craftable_things.keys():
-        for i in range(int(count)):
-            for element in recipe:
-                ressources_for_crafting.append(element)
-        # zip the ressources. so for example ["stone*1", "stone*2"] -> ["stone*3"]
-        ressources_for_crafting = zip_ressource_list(ressource_list=ressources_for_crafting)
+        for item in recipe:
+            ressources_for_crafting[item.split("*")[0]] = int(item.split("*")[1]) * int(count)
+        print(ressources_for_crafting)
         # check if user has all items he needs
         new_inv = delete_items_from_inventory(inventory=inventory["items"], inventory_to_delete=ressources_for_crafting)
         if not new_inv[0]:
@@ -43,7 +42,7 @@ def craft_item(inventory, recipes, needed_time_per_item):
 
 def delete_items_from_inventory(inventory, inventory_to_delete):
     # loops through each item for the ressources in the recipe
-    for item, count in inventory_to_delete:
+    for item, count in inventory_to_delete.items():
         # checks if user has the item
         if item in inventory.keys():
             # checks if user has the count of the items
@@ -61,18 +60,6 @@ def delete_items_from_inventory(inventory, inventory_to_delete):
     return True, inventory
 
 
-def zip_ressource_list(ressource_list):
-    # self-explanatory
-    result = {}
-    for item in ressource_list:
-        key, value = item.split('*')
-        if key in result:
-            result[key] += float(value)
-        else:
-            result[key] = float(value)
-    return [(key, value) for key, value in result.items()]
-
-
 ### EXAMPLE USAGE ####
 example = False
 if example:
@@ -88,8 +75,9 @@ if example:
         "fuel tank|items": ["rubber*2", "steel*5"],
         "repair kit|tools": ["insulator*1", "nickel*1"]
     }
-    inventory = {"tools": {"pickaxe": 100.0, "wrench": 100, "shovel": 92.5, "axe": 95.0}, "items": {"stone": 4.0, "stick": 2.0, "rubber": 10, "iron": 9.0, "match": 1, "sand": 15, "coal": 50, "insulator": 1, "nickel": 23}}
-    all_ressources = ["wood", "stone", "iron", "metal", "coal", "steel plate", "rubber", "conveyor belt"]
+    inventory = {"tools": {"pickaxe": 100.0, "wrench": 100, "shovel": 92.5, "axe": 95.0},
+                 "items": {"stone": 4.0, "stick": 2.0, "rubber": 10, "iron": 9.0, "match": 3, "sand": 15, "coal": 50,
+                           "insulator": 1, "nickel": 23, "steel": 2}}
     needed_time = 0.25
     craft_itemm = craft_item(inventory, recipes, needed_time)
     if craft_itemm[1]:

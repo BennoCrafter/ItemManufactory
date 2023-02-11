@@ -7,7 +7,6 @@ from commands.repair import repair
 import json
 
 
-
 class ItemManufactory:
     def __init__(self):
         self.instruction = "comming lol"
@@ -16,15 +15,14 @@ class ItemManufactory:
         self.needed_time_to_craft = 0.25
         self.needed_time_to_mine = 0.25
         self.inp = ""
-        self.possible_positions = ["spawn", "iron source", "nickel source", "cooper source", "coal source", "rubber tree", "sand place"]
-        self.mining_positions = ["iron source", "nickel source", "cooper source", "coal source", "rubber tree", "sand place"]
         self.file_paths = {
             "upgrade_tiers_tools": "GameData/upgrade_tiers_tools.json",
             "upgrade_tiers_factorys": "GameData/upgrade_tiers_factorys.json",
             "all_ressources": "GameData/all_ressources.json",
             "recipes": "GameData/recipes.json",
             "inventory": "GameData/inventory.json",
-            "player_experience": "GameData/player_experience.json"
+            "player_experience": "GameData/player_experience.json",
+            "positions": "GameData/positions.json"
         }
 
         self.commands = {"craft item": craft_item,
@@ -34,11 +32,8 @@ class ItemManufactory:
                          "go to": go_to,
                          "repair tool": repair
                          }
-        self.info_commands = {"save": "placeholder",
-                              "exit": "placeholder",
-                              "get pos": "placeholder",
-                              "get inventory": "placeholder"
-                              }
+
+        self.info_commands = ["save", "exit", "get pos", "get_inventory"]
 
     def get_command(self, inp):
         self.inp = inp
@@ -65,7 +60,7 @@ class ItemManufactory:
                 self.inventory = result[0]
         if command == "mine":
             result = self.commands[command](inventory=self.inventory, pos=self.player_data.get("position"),
-                                            mining_spots=self.mining_positions, duarbility_tier=.5,
+                                            mining_spots=self.positions.get("mining positions"), duarbility_tier=.5,
                                             needed_time_per_item=self.needed_time_to_mine)
             if not result[1]:
                 print(result[0])
@@ -80,7 +75,7 @@ class ItemManufactory:
             else:
                 self.inventory = result[0]
         elif command == "go to":
-            result = go_to(position=self.player_data.get("position"), possible_positions=self.possible_positions)
+            result = go_to(position=self.player_data.get("position"), possible_positions=self.positions.get("possible_positions"))
             if not result[1]:
                 print(result[0])
             else:
@@ -130,6 +125,8 @@ class ItemManufactory:
         self.recipes = self.load_json_file(file_path=self.file_paths.get("recipes"))
         # load player data
         self.player_data = self.load_json_file(file_path=self.file_paths.get("player_experience"))
+        # laod positions
+        self.positions = self.load_json_file(file_path=self.file_paths.get("positions"))
 
     def print_inventory_pretty(self):
         if self.printing_pretty:
