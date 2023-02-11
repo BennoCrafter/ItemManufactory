@@ -15,6 +15,9 @@ def mine(inventory, pos, mining_spots, duarbility_tier, needed_time_per_item):
             elif art == "source":
                 if tool_to_use != "pickaxe":
                     return "You're using the wrong Tool", False
+            elif art == "place":
+                if tool_to_use != "shovel":
+                    return "You're using the wrong Tool", False
 
             count = int(input("How often do you want to mine?:"))
             # shrink durability of tool

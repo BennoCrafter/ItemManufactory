@@ -3,7 +3,9 @@ from commands.mine import mine
 from commands.craft_item import craft_item
 from commands.create_item import create_item
 from commands.get_item_dev import get_item_dev
+from commands.repair import repair
 import json
+
 
 
 class ItemManufactory:
@@ -14,8 +16,8 @@ class ItemManufactory:
         self.needed_time_to_craft = 0.25
         self.needed_time_to_mine = 0.25
         self.inp = ""
-        self.possible_positions = ["spawn", "iron source", "nickel source", "cooper source", "rubber tree"]
-        self.mining_positions = ["iron source", "nickel source", "cooper source", "rubber tree"]
+        self.possible_positions = ["spawn", "iron source", "nickel source", "cooper source", "coal source", "rubber tree", "sand place"]
+        self.mining_positions = ["iron source", "nickel source", "cooper source", "coal source", "rubber tree", "sand place"]
         self.file_paths = {
             "upgrade_tiers_tools": "GameData/upgrade_tiers_tools.json",
             "upgrade_tiers_factorys": "GameData/upgrade_tiers_factorys.json",
@@ -29,7 +31,8 @@ class ItemManufactory:
                          "create item": create_item,
                          "mine": mine,
                          "get item dev": get_item_dev,
-                         "go to": go_to
+                         "go to": go_to,
+                         "repair tool": repair
                          }
         self.info_commands = {"save": "placeholder",
                               "exit": "placeholder",
@@ -68,8 +71,14 @@ class ItemManufactory:
                 print(result[0])
             else:
                 self.inventory = result[0]
-        elif self.inp == "get item dev":
+        elif command == "get item dev":
             self.inventory = get_item_dev(inventory=self.inventory)
+        elif command == "repair tool":
+            result = self.commands[command](inventory=self.inventory)
+            if not result[1]:
+                print(result[0])
+            else:
+                self.inventory = result[0]
         elif command == "go to":
             result = go_to(position=self.player_data.get("position"), possible_positions=self.possible_positions)
             if not result[1]:
@@ -103,7 +112,7 @@ class ItemManufactory:
 
     def save(self):
         with open(self.file_paths.get("inventory"), "w") as f:
-            json.dump(self.inventory, f)
+            json.dump(self.inventory, f, indent=4)
         f.close()
         with open(self.file_paths.get("player_experience"), "w") as f:
             json.dump(self.player_data, f)
