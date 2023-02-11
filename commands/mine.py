@@ -1,10 +1,9 @@
 import time
 
 
-def mine(inventory, pos, mining_spots, duarbility_tier):
+def mine(inventory, pos, mining_spots, duarbility_tier, needed_time_per_item):
     if pos in mining_spots:
         append_item_count = 1
-        needed_time_to_mine = 0.25
         print(f"You're current position is: {pos}")
         tool_to_use = input(f"Which tool do you want to use for mining {pos.split(' ')[0]}?:")
         if tool_to_use in inventory["tools"].keys():
@@ -25,8 +24,9 @@ def mine(inventory, pos, mining_spots, duarbility_tier):
                 inventory["items"][item] += append_item_count * count
             else:
                 inventory["items"][item] = append_item_count * count
-            print(f"mining... Needed time: {needed_time_to_mine*count}")
-            time.sleep(needed_time_to_mine*count)
+            print(f"mining... Needed time: {needed_time_per_item*count}")
+            time.sleep(needed_time_per_item*count)
+            print("Finished!")
             return inventory, True
         else:
             return "You don't have the tool!", False

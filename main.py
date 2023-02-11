@@ -11,6 +11,8 @@ class ItemManufactory:
         self.instruction = "comming lol"
         self.printing_pretty = True
         self.distance = 12
+        self.needed_time_to_craft = 0.25
+        self.needed_time_to_mine = 0.25
         self.inp = ""
         self.possible_positions = ["spawn", "iron source", "nickel source", "cooper source", "rubber tree"]
         self.mining_positions = ["iron source", "nickel source", "cooper source", "rubber tree"]
@@ -27,55 +29,65 @@ class ItemManufactory:
                          "create item": create_item,
                          "mine": mine,
                          "get item dev": get_item_dev,
+                         "go to": go_to
                          }
-        self.special_commands = {"save": "placeholder",
-                                 "exit": "placeholder",
-                                 "get pos": "placeholder",
-                                 "go to": go_to,
-                                 "get inventory": "placeholder"
-                                 }
+        self.info_commands = {"save": "placeholder",
+                              "exit": "placeholder",
+                              "get pos": "placeholder",
+                              "get inventory": "placeholder"
+                              }
 
     def get_command(self, inp):
         self.inp = inp
+        if self.inp not in self.commands and self.inp not in self.info_commands:
+            print(f"Command: {self.inp} doesn't exist!")
+            self.game_loop()
+            return
 
-        if self.inp in self.commands.keys():
-            if self.inp == "craft item":
-                new_inventory = self.commands[self.inp](inventory=self.inventory, recipes=self.recipes)
-                if new_inventory[1]:
-                    self.inventory = new_inventory[0]
-                else:
-                    print(new_inventory[0])
-            elif self.inp == "get item dev":
-                self.inventory = get_item_dev(inventory=self.inventory)
-            elif self.inp == "mine":
-                new_inventory = self.commands[self.inp](inventory=self.inventory, pos=self.player_data.get("position"), mining_spots=self.mining_positions, duarbility_tier=.5)
-                if new_inventory[1]:
-                    self.inventory = new_inventory[0]
-                    print("Mined item successfully!")
-                else:
-                    print(new_inventory[0])
-        else:
-            if self.inp in self.special_commands.keys():
-                if self.inp == "save":
-                    self.save()
-                elif self.inp == "exit":
-                    self.save()
-                    exit()
-                elif self.inp == "get pos":
-                    print(f"You're current position is: {self.player_data.get('position')}")
-                elif self.inp == "get inventory":
-                    self.print_inventory_pretty()
-                elif self.inp == "go to":
-                    new_position = go_to(position=self.player_data.get("position"),
-                                         possible_positions=self.possible_positions)
-                    if new_position[1]:
-                        self.player_data["position"] = new_position[0]
-                        print(f"You're current position is: {self.player_data.get('position')}")
-                    else:
-                        print(new_position[0])
-            else:
-                print(f"Command: {self.inp} doesn't exists!")
+        if self.inp in self.commands:
+            self.handle_command(self.inp)
+
+        if self.inp in self.info_commands:
+            self.handle_info_command(self.inp)
+
         self.game_loop()
+
+    def handle_command(self, command):
+        if command == "craft item":
+            result = self.commands[command](inventory=self.inventory, recipes=self.recipes,
+                                            needed_time_per_item=self.needed_time_to_craft)
+            if not result[1]:
+                print(result[0])
+            else:
+                self.inventory = result[0]
+        if command == "mine":
+            result = self.commands[command](inventory=self.inventory, pos=self.player_data.get("position"),
+                                            mining_spots=self.mining_positions, duarbility_tier=.5,
+                                            needed_time_per_item=self.needed_time_to_mine)
+            if not result[1]:
+                print(result[0])
+            else:
+                self.inventory = result[0]
+        elif self.inp == "get item dev":
+            self.inventory = get_item_dev(inventory=self.inventory)
+        elif command == "go to":
+            result = go_to(position=self.player_data.get("position"), possible_positions=self.possible_positions)
+            if not result[1]:
+                print(result[0])
+            else:
+                self.player_data["position"] = result[0]
+                print(f"Your current position is: {self.player_data.get('position')}")
+
+    def handle_info_command(self, command):
+        if command == "save":
+            self.save()
+        elif command == "exit":
+            self.save()
+            exit()
+        elif command == "get pos":
+            print(f"Your current position is: {self.player_data.get('position')}")
+        elif command == "get inventory":
+            self.print_inventory_pretty()
 
     def game_loop(self):
         self.get_command(inp=input("Input:"))

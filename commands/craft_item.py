@@ -1,4 +1,7 @@
-def craft_item(inventory, recipes):
+import time
+
+
+def craft_item(inventory, recipes, needed_time_per_item):
     item_to_craft, count = input("What do you want to craft?: (steel*1)").split("*")
     all_craftable_things = []
     ressources_for_crafting = []
@@ -11,7 +14,7 @@ def craft_item(inventory, recipes):
         for i in range(int(count)):
             for element in recipe:
                 ressources_for_crafting.append(element)
-        # zips the ressources. so for example ["stone*1", "stone*2"] -> ["stone*3"]
+        # zip the ressources. so for example ["stone*1", "stone*2"] -> ["stone*3"]
         ressources_for_crafting = zip_ressource_list(ressource_list=ressources_for_crafting)
         # check if user has all items he needs
         new_inv = delete_items_from_inventory(inventory=inventory["items"], inventory_to_delete=ressources_for_crafting)
@@ -19,7 +22,12 @@ def craft_item(inventory, recipes):
             # returns exeption to user
             return new_inv[1], False
         else:
+            # wait until crafting time is over
+            print(f"crafting... Needed time: {needed_time_per_item * int(count)}")
+            time.sleep(needed_time_per_item * int(count))
+            # delete ressources from inventory
             inventory["items"] = new_inv[1]
+            # append new item to inventory
             inventory["items"][item_to_craft] = int(count)
             return inventory, True
     else:
@@ -61,11 +69,11 @@ def zip_ressource_list(ressource_list):
 ### EXAMPLE USAGE ####
 example = False
 if example:
-    recipes = {"metal": ["iron*1", "match*1"], "match": ["stick*1", "coal*.25"], "stick": ["wood*0.25"]}
+    recipes = {"steel": ["iron*1", "match*1"], "match": ["stick*1", "coal*.25"], "stick": ["wood*0.25"]}
     inventory = {"tools": ["pickaxe", "wrench", "shovel"], "items": {"iron": 2, "match": 2, "wood": 2, "coal": 0.25}}
     all_ressources = ["wood", "stone", "iron", "metal", "coal", "steel plate", "rubber", "conveyor belt"]
-
-    craft_item = craft_item(inventory, all_ressources, recipes)
+    needed_time = 0.25
+    craft_item = craft_item(inventory, recipes, needed_time)
     if craft_item[1]:
         inventory = craft_item[0]
     else:
