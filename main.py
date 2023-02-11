@@ -4,6 +4,7 @@ from commands.craft_item import craft_item
 from commands.create_item import create_item
 from commands.get_item_dev import get_item_dev
 from commands.repair import repair
+from commands.get_recipe import get_recipe
 import json
 
 
@@ -33,7 +34,7 @@ class ItemManufactory:
                          "repair tool": repair
                          }
 
-        self.info_commands = ["save", "exit", "get pos", "get_inventory"]
+        self.info_commands = ["save", "exit", "get pos", "get inventory", "get recipe"]
 
     def get_command(self, inp):
         self.inp = inp
@@ -90,6 +91,8 @@ class ItemManufactory:
             exit()
         elif command == "get pos":
             print(f"Your current position is: {self.player_data.get('position')}")
+        elif command == "get recipe":
+            print(get_recipe(inventory=self.inventory, recipes=self.recipes))
         elif command == "get inventory":
             self.print_inventory_pretty()
 
