@@ -20,12 +20,35 @@ def get_recipe(inventory, recipes):
         # save ressources pretty
         for item, count in ressources_for_crafting.items():
             pretty_ressources += f"- {item}: {count}\n"
+        necessary_items = get_necessary_items(inventory=inventory, ressources_for_crafting=ressources_for_crafting)
+        if not necessary_items.items():
+            print("You are ready to craft! You have all items you need!")
+        else:
+            necessary_items_pretty = ""
+            for item, count in necessary_items.items():
+                necessary_items_pretty += f"- {item}: {count}\n"
+            # print items who are needed
+            print("You only need:")
+            print(necessary_items_pretty)
+            # ressources
         return pretty_ressources
     else:
         return "This Item doesn't exists!"
 
 
-example = False
+def get_necessary_items(inventory, ressources_for_crafting):
+    necessary_items = {}
+    print(ressources_for_crafting)
+    for item, count in ressources_for_crafting.items():
+        if item in inventory["items"]:
+            if inventory["items"].get(item) < count:
+                necessary_items[item] = int(count) - inventory["items"].get(item)
+        else:
+            necessary_items[item] = int(count)
+
+    return necessary_items
+
+example = True
 if example:
     recipes = {
         "steel|items": ["iron*1", "match*1"],
