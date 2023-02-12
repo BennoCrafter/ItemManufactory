@@ -61,7 +61,7 @@ class ItemManufactory:
                 self.inventory = result[0]
         if command == "mine":
             result = self.commands[command](inventory=self.inventory, pos=self.player_data.get("position"),
-                                            mining_spots=self.positions.get("mining positions"), duarbility_tier=.5,
+                                            mining_spots=self.positions.get("mining_positions"), duarbility_tier=.5,
                                             needed_time_per_item=self.needed_time_to_mine)
             if not result[1]:
                 print(result[0])

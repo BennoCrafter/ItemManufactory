@@ -1,8 +1,8 @@
 {
   "steel|items": ["iron*1", "match*1"],
   "match|items": ["stick*1", "coal*0.25"],
-  "stick|items": ["wood*1"],
-  "engine|items":  ["steel*10", "copper wire*5", "fuel tank*1", "spark plug*1"],
+  "stick|items": ["wood*0.25"],
+  "engine|items":  ["steel*10", "cooper wire*5", "fuel tank*1", "spark plug*1"],
   "spark plug|items":  ["cooper*5", "nickel*2", "insulator*1"],
   "insulator|items": ["rubber*5", "glass*2"],
   "glass|items":  ["sand*1", "match*1"],

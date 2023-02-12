@@ -48,7 +48,7 @@ def get_necessary_items(inventory, ressources_for_crafting):
 
     return necessary_items
 
-example = True
+example = False
 if example:
     recipes = {
         "steel|items": ["iron*1", "match*1"],

@@ -13,7 +13,7 @@ def craft_item(inventory, recipes, needed_time_per_item):
     # save all ressources for crafting in a list
     if item_to_craft in all_craftable_things.keys():
         for item in recipe:
-            ressources_for_crafting[item.split("*")[0]] = int(item.split("*")[1]) * int(count)
+            ressources_for_crafting[item.split("*")[0]] = float(item.split("*")[1]) * int(count)
         print(ressources_for_crafting)
         # check if user has all items he needs
         new_inv = delete_items_from_inventory(inventory=inventory["items"], inventory_to_delete=ressources_for_crafting)
@@ -22,8 +22,8 @@ def craft_item(inventory, recipes, needed_time_per_item):
             return new_inv[1], False
         else:
             # wait until crafting time is over
-            print(f"crafting... Needed time: {needed_time_per_item * int(count)}")
-            time.sleep(needed_time_per_item * int(count))
+            print(f"crafting... Needed time: {needed_time_per_item * float(count)}")
+            time.sleep(needed_time_per_item * float(count))
             # delete ressources from inventory
             inventory["items"] = new_inv[1]
             # append new item to inventory
@@ -32,9 +32,9 @@ def craft_item(inventory, recipes, needed_time_per_item):
                 count = 100
             # check if user already has the crafted item in the inventory
             if item_to_craft in inventory[all_craftable_things.get(item_to_craft)]:
-                inventory[all_craftable_things.get(item_to_craft)][item_to_craft] += int(count)
+                inventory[all_craftable_things.get(item_to_craft)][item_to_craft] += float(count)
             else:
-                inventory[all_craftable_things.get(item_to_craft)][item_to_craft] = int(count)
+                inventory[all_craftable_things.get(item_to_craft)][item_to_craft] = float(count)
             return inventory, True
     else:
         return "The item doesn't exists!", False
@@ -46,8 +46,8 @@ def delete_items_from_inventory(inventory, inventory_to_delete):
         # checks if user has the item
         if item in inventory.keys():
             # checks if user has the count of the items
-            if inventory.get(item) >= count:
-                if inventory.get(item) == count:
+            if float(inventory.get(item)) >= float(count):
+                if float(inventory.get(item)) == float(count):
                     # delete item from inv
                     inventory.pop(item)
                 else:

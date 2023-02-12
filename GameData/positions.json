@@ -1,4 +1,4 @@
 {
-  "possible positions": ["spawn", "iron source", "nickel source", "cooper source", "coal source", "rubber tree", "sand place"],
-  "mining positions": ["iron source", "nickel source", "cooper source", "coal source", "rubber tree", "sand place"]
+  "possible_positions": ["spawn", "iron source", "nickel source", "cooper source", "coal source", "rubber tree", "sand place", "wood tree"],
+  "mining_positions": ["iron source", "nickel source", "cooper source", "coal source", "rubber tree", "sand place", "wood tree"]
 }
