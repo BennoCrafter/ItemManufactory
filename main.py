@@ -5,12 +5,15 @@ from commands.create_item import create_item
 from commands.get_item_dev import get_item_dev
 from commands.repair import repair
 from commands.get_recipe import get_recipe
+from GUI.get_element import Gui
 import json
 
 
 class ItemManufactory:
     def __init__(self):
-        self.instruction = "comming lol"
+        self.instruction = "coming soon lol"
+        self.gui = Gui()
+        self.gui.load_map()
         self.printing_pretty = True
         self.distance = 12
         self.needed_time_to_craft = 0.25
@@ -45,9 +48,11 @@ class ItemManufactory:
 
         if self.inp in self.commands:
             self.handle_command(self.inp)
+            self.gui.get_right_gui_element(inp=self.inp, inventory=self.inventory, specific_pos=self.player_data.get('specific_position'))
 
         if self.inp in self.info_commands:
             self.handle_info_command(self.inp)
+            self.gui.get_right_gui_element(inp=self.inp, inventory=self.inventory, specific_pos=self.player_data.get('specific_position'))
 
         self.game_loop()
 

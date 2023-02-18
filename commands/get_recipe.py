@@ -48,6 +48,7 @@ def get_necessary_items(inventory, ressources_for_crafting):
 
     return necessary_items
 
+
 example = False
 if example:
     recipes = {
