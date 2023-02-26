@@ -5,6 +5,7 @@ from commands.create_item import create_item
 from commands.get_item_dev import get_item_dev
 from commands.repair import repair
 from commands.get_recipe import get_recipe
+from commands.help import help
 from GUI.get_element import Gui
 import json
 
@@ -37,7 +38,7 @@ class ItemManufactory:
                          "repair tool": repair
                          }
 
-        self.info_commands = ["save", "exit", "get pos", "get inventory", "get recipe"]
+        self.info_commands = ["save", "exit", "get pos", "get inventory", "get recipe", "help", "commands"]
 
     def get_command(self, inp):
         self.inp = inp
@@ -100,13 +101,18 @@ class ItemManufactory:
             print(get_recipe(inventory=self.inventory, recipes=self.recipes))
         elif command == "get inventory":
             self.print_inventory_pretty()
+        elif command == "help":
+            help()
+        elif command == "commands":
+            print(list(self.commands.keys()))
+            print(self.info_commands)
 
     def game_loop(self):
         self.get_command(inp=input("Input:"))
 
     def print_instruction(self):
-        print("Instruction...")
-        print(self.instruction)
+        print("Welcome by ItemManufactory!")
+        print("Use help to print the instruction")
 
     def load_json_file(self, file_path):
         with open(file_path, "r") as file:

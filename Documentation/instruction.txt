@@ -1,0 +1,31 @@
+Welcome to ItemManufactory! Here's a list of commands you can use to navigate the game:
+----------------------------------------------------------------------------------------------------------------
+craft item - Use this command to craft an item. Make sure you have the necessary materials in your inventory before using this command.
+
+create item - Similar to the craft item command, use this to create a new item. However, this command might require different materials or a different recipe.
+
+mine - Use this command to mine resources from the game world. You might need a specific tool to mine certain resources.
+
+get item dev - This command is only for developers, and it will give you a specific item for testing purposes.
+
+go to - Use this command to move to a different location in the game world.
+
+repair tool - Sometimes your tools might break or wear down. Use this command to repair them.
+----------------------------------------------------------------------------------------------------------------
+Here are some additional information commands that you can use:
+
+save - Use this command to save your progress in the game.
+
+exit - Use this command to exit the game.
+
+get pos - Use this command to get your current position in the game world.
+
+get inventory - Use this command to see what items you currently have in your inventory.
+
+get recipe - Use this command to see the recipe for a specific item.
+
+help - Use this command to get some general help and tips for playing the game.
+
+commands - Use this command to see a list of all available commands in the game.
+----------------------------------------------------------------------------------------------------------------
+Good luck, and have fun exploring and crafting in the game world!
