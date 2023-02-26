@@ -3,4 +3,4 @@ def go_to(position, possible_positions):
     if wanted_pos in possible_positions:
         return wanted_pos, True
     else:
-        return "This position point does'nt exists!", False
+        return f"This position point does'nt exists! You can try:{possible_positions}", False

@@ -1,0 +1,23 @@
+{
+    "tools": {
+        "pickaxe": 100.0,
+        "wrench": 100,
+        "shovel": 82.5,
+        "axe": 80.0,
+        "repair kit": 86.25
+    },
+    "items": {
+        "stone": 4.0,
+        "rubber": 18.0,
+        "iron": 4.0,
+        "match": 3.0,
+        "sand": 33.0,
+        "coal": 45.25,
+        "wood": 3.75,
+        "nickel": 8.0,
+        "cooper": 11.0,
+        "stick": 8.0,
+        "cooper wire": 2.0,
+        "engine": 1.0
+    }
+}

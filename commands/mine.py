@@ -19,7 +19,11 @@ def mine(inventory, pos, mining_spots, duarbility_tier, needed_time_per_item):
                 if tool_to_use != "shovel":
                     return "You're using the wrong Tool", False
 
-            count = int(input("How often do you want to mine?:"))
+            count = input("How often do you want to mine?:")
+            if count.isdigit():
+                count = int(count)
+            else:
+                return "Please enter a valid number!", False
             # shrink durability of tool
             inventory["tools"][tool_to_use] -= float(duarbility_tier) * count
             # append new item to dict
